@@ -3,25 +3,40 @@
 
 var imageCTX;
 var stepSize;
+var width;
+var height;
 
 function initCanvas(){
   var imageCanvas = document.getElementById("canvas");
+  imageCanvas.width = window.innerWidth;
+  imageCanvas.height = window.innerHeight;
   imageCanvas.style.backgroundColor="#221133";
   imageCTX = imageCanvas.getContext("2d");
+  width = imageCanvas.width;
+  height = imageCanvas.height;
 }
 
 function density(p){          //negative is space, positive is ground
-  var rad = 200;
-  var center = [300,330];
+  var rad = width*.4;
+  var center = [width/2,height*.8];
   var density = rad - dist2D(p,center);
-  density+=texture[p[0]%16]*4;
-  density+=texture[p[0]*2%16]*7.7;
-  density+=texture[p[1]%16]*4;
-  density+=texture[p[1]*2%16]*7.7;
+  density+=texture[p[0]*4 %16] *4;
+  density+=texture[p[0]*2 %16] *7.7;
+  density+=texture[p[0]   %16] *15.6;
+  density+=texture[p[1]*4 %16] *4;
+  density+=texture[p[1]*2 %16] *7.7;
+  density+=texture[p[1]   %16] *15.6;
   return density;
 }
 
-function render(width,height,step){
+function render(step){
+  render2(width,height,step);
+}
+
+function render2(width,height,step){
+  //clear canvas
+  imageCTX.clearRect(0, 0, canvas.width, canvas.height);
+
   //sample all the points
   var points = [];
   stepSize = step;
@@ -35,6 +50,7 @@ function render(width,height,step){
       points[x+y*xlimit]=density(point);
     }
   }
+
   //Interpolate and draw lines
   for(var i = 0; i < points.length-1; i++){
     var NW = points[i];
@@ -42,7 +58,6 @@ function render(width,height,step){
     var SE = points[i+xlimit+1];
     var SW = points[i+xlimit];
 
-    //this can be lerped after a while!
     var x = i%xlimit;
     var y = Math.floor(i/xlimit);
 
