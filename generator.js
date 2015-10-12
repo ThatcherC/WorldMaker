@@ -46,7 +46,7 @@ function render(width,height,step){
     var x = i%xlimit;
     var y = Math.floor(i/xlimit);
 
-    var pointsOnEdge = [[x+.5,y],[x+1,y+.5],[x+.5,y+1],[x,y+.5]];
+    var pointsOnEdge = [[x+map(NW,NE),y],[x+1,y+map(NE,SE)],[x+map(SW,SE),y+1],[x,y+map(NW,SW)]];
 
     var whichSquare =((NW>0)<<0) +
                      ((NE>0)<<1) +
@@ -72,6 +72,10 @@ function drawLine(p0,p1){
 
 function dist2D(p1, p2){
   return Math.sqrt( Math.pow((p1[0]-p2[0]),2) + Math.pow((p1[1]-p2[1]),2) );
+}
+
+function map(x0,x1){
+  return -x0/(x1-x0);
 }
 
 var texture = [0.0587657, 0.67431, 0.66583, 0.42095358, 0.807371, -0.22328161, -0.549806, -0.315057, 0.529369, -0.4884391, 0.408421, 0.894688, 0.537058, 0.50283, -0.955801, 0.1493195];
