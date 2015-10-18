@@ -5,6 +5,9 @@ var imageCTX;
 var stepSize;
 var width;
 var height;
+var rad;
+var center;
+var digPoints = [];
 
 function initCanvas(){
   var imageCanvas = document.getElementById("canvas");
@@ -14,11 +17,15 @@ function initCanvas(){
   imageCTX = imageCanvas.getContext("2d");
   width = imageCanvas.width;
   height = imageCanvas.height;
+  initDensityVars();
+}
+
+function initDensityVars(){
+  rad = width*.4;
+  center = [width/2,height*.8];
 }
 
 function density(p){          //negative is space, positive is ground
-  var rad = width*.4;
-  var center = [width/2,height*.8];
   var density = rad - dist2D(p,center);
   density+=texture[p[0]*4 %16] *4;
   density+=texture[p[0]*2 %16] *7.7;
@@ -26,11 +33,19 @@ function density(p){          //negative is space, positive is ground
   density+=texture[p[1]*4 %16] *4;
   density+=texture[p[1]*2 %16] *7.7;
   density+=texture[p[1]   %16] *15.6;
+  density=constrain(density,-10,10)
+  for(var i =0; i<digPoints.length; i++){
+    density += -1000/(1+Math.pow(digPoints[i][0]-p[0],2)+Math.pow(digPoints[i][1]-p[1],2));
+  }
   return density;
 }
 
 function render(step){
   render2(width,height,step);
+}
+
+function addDigPoint(x,y){
+  digPoints[digPoints.length]=[x,y];
 }
 
 function render2(width,height,step){
@@ -47,6 +62,8 @@ function render2(width,height,step){
   for(var x = 0; x < xlimit; x+=1){
     for(var y = 0; y < ylimit; y+=1){
       var point = [x*step,y*step];
+
+      //very unconventional - used to allow digging
       points[x+y*xlimit]=density(point);
     }
   }
@@ -91,6 +108,16 @@ function dist2D(p1, p2){
 
 function map(x0,x1){
   return -x0/(x1-x0);
+}
+
+function constrain(n,lower,upper){
+  if(n<lower){
+    return lower;
+  }
+  if(n>upper){
+    return upper;
+  }
+  return n;
 }
 
 var texture = [0.0587657, 0.67431, 0.66583, 0.42095358, 0.807371, -0.22328161, -0.549806, -0.315057, 0.529369, -0.4884391, 0.408421, 0.894688, 0.537058, 0.50283, -0.955801, 0.1493195];

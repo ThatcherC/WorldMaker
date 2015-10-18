@@ -4,6 +4,17 @@
 <script src="generator.js"></script>
 </head>
 <body>
-  <canvas width=inherit height=auto id="canvas"></canvas>
+  <canvas width=inherit height=auto id="canvas" onclick="mouse(event)"></canvas>
+  <script>
+    initCanvas();
+    render(20);
+
+    function mouse(e){
+      addDigPoint(e.offsetX,e.offsetY);
+      var t1 = new Date().getMilliseconds();
+      render(20);
+      console.log((new Date().getMilliseconds()-t1)%1000);
+    }
+  </script>
 </body>
 </html>
