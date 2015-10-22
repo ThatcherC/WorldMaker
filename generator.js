@@ -22,7 +22,7 @@ function initCanvas(){
 
 function initDensityVars(){
   rad = width*.4;
-  center = [width/2,height*.8];
+  center = [width/2,height*.85];
 }
 
 function density(p){          //negative is space, positive is ground
@@ -35,7 +35,7 @@ function density(p){          //negative is space, positive is ground
   density+=texture[p[1]   %16] *15.6;
   density=constrain(density,-10,10)
   for(var i =0; i<digPoints.length; i++){
-    density += -1000/(1+Math.pow(digPoints[i][0]-p[0],2)+Math.pow(digPoints[i][1]-p[1],2));
+    density += -digPoints[i][2]/(1+Math.pow(digPoints[i][0]-p[0],2)+Math.pow(digPoints[i][1]-p[1],2));
   }
   return density;
 }
@@ -44,8 +44,8 @@ function render(step){
   render2(width,height,step);
 }
 
-function addDigPoint(x,y){
-  digPoints[digPoints.length]=[x,y];
+function addDigPoint(x,y,r){
+  digPoints[digPoints.length]=[x,y,r];
 }
 
 function render2(width,height,step){

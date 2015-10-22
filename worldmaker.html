@@ -4,17 +4,26 @@
 <script src="generator.js"></script>
 </head>
 <body style="margin:0">
-  <canvas width=inherit height=auto id="canvas" onclick="mouse(event)"></canvas>
+  <canvas width=inherit height=auto id="canvas" onkeydown="KDE(event)" onclick="mouse(event)"></canvas>
   <script>
     initCanvas();
     render(20);
+    var r = 1000;
 
     function mouse(e){
-      addDigPoint(e.offsetX,e.offsetY);
-      var t1 = new Date().getMilliseconds();
+      addDigPoint(e.offsetX,e.offsetY,r);
+      //var t1 = new Date().getMilliseconds();
       render(20);
-      console.log((new Date().getMilliseconds()-t1)%1000);
+      //console.log((new Date().getMilliseconds()-t1)%1000);
     }
+
+    function invert(e){
+      if(event.keyCode==32){
+        r *= -1;
+      }
+    }
+
+    window.addEventListener("keypress", invert);
   </script>
 </body>
 </html>
