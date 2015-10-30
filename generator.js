@@ -6,6 +6,7 @@ var stepSize;
 var width;
 var height;
 var rad;
+var w = 1;
 var center;
 var digPoints = [];
 
@@ -26,14 +27,17 @@ function initDensityVars(){
 }
 
 function density(p){          //negative is space, positive is ground
-  var density = rad - dist2D(p,center);
-  density+=texture[p[0]*4 %16] *4;
-  density+=texture[p[0]*2 %16] *7.7;
-  density+=texture[p[0]   %16] *15.6;
-  density+=texture[p[1]*4 %16] *4;
-  density+=texture[p[1]*2 %16] *7.7;
-  density+=texture[p[1]   %16] *15.6;
-  density=constrain(density,-10,10)
+  var density = 1-2/(1+Math.exp((rad*rad-sqrDist2d(p,center)*w)));
+
+  density+=texture[p[0]*4 %16] *.2;
+  density+=texture[p[0]*2 %16] *.35;
+  //density+=texture[p[0]   %16] *1.56;
+  density+=texture[p[1]*4 %16] *.2;
+  density+=texture[p[1]*2 %16] *.35;
+  //density+=texture[p[1]   %16] *1.56;
+
+  //density=constrain(density,-10,10)
+
   for(var i =0; i<digPoints.length; i++){
     density += -digPoints[i][2]/(1+Math.pow(digPoints[i][0]-p[0],2)+Math.pow(digPoints[i][1]-p[1],2));
   }
@@ -104,6 +108,10 @@ function drawLine(p0,p1){
 
 function dist2D(p1, p2){
   return Math.sqrt( Math.pow((p1[0]-p2[0]),2) + Math.pow((p1[1]-p2[1]),2) );
+}
+
+function sqrDist2d(p1, p2){
+  return Math.pow((p1[0]-p2[0]),2) + Math.pow((p1[1]-p2[1]),2);
 }
 
 function map(x0,x1){
