@@ -27,16 +27,9 @@ function initDensityVars(){
 }
 
 function density(p){          //negative is space, positive is ground
-  var density = 1-2/(1+Math.exp((rad*rad-sqrDist2d(p,center)*w)));
+  var density = 1-2/(1+Math.exp((rad*rad-sqrDist2d(p,center))*w));
 
-  density+=texture[p[0]*4 %16] *.2;
-  density+=texture[p[0]*2 %16] *.35;
-  //density+=texture[p[0]   %16] *1.56;
-  density+=texture[p[1]*4 %16] *.2;
-  density+=texture[p[1]*2 %16] *.35;
-  //density+=texture[p[1]   %16] *1.56;
-
-  //density=constrain(density,-10,10)
+  
 
   for(var i =0; i<digPoints.length; i++){
     density += -digPoints[i][2]/(1+Math.pow(digPoints[i][0]-p[0],2)+Math.pow(digPoints[i][1]-p[1],2));
@@ -126,6 +119,10 @@ function constrain(n,lower,upper){
     return upper;
   }
   return n;
+}
+
+function sampleNoise(sample,point,scale){
+
 }
 
 var texture = [-0.136017491875, 0.4795268081249999, 0.471046808125, 0.22617038812499998, 0.6125878081249999, -0.418064801875, -0.7445891918750001, -0.509840191875, 0.33458580812499994, -0.683222291875, 0.21363780812499997, 0.699904808125, 0.342274808125, 0.30804680812499996, -1.150584191875, -0.04546369187500002];
