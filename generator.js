@@ -6,7 +6,8 @@ var stepSize;
 var width;
 var height;
 var rad;
-var w = 100;        //~distance between zero and max
+var bias = -.2;      //controls how much noise is above and below ground
+var w = 400;        //~distance between zero and max
 var center;
 var digPoints = [];
 
@@ -32,6 +33,8 @@ function density(p){          //negative is space, positive is ground
   density += sampleNoise(t1,p,128)*1;
   density += sampleNoise(t2,p,63.4)*.5;
   density += sampleNoise(t1,p,33)*.25;
+
+  density += bias;
 
   for(var i =0; i<digPoints.length; i++){
     density += -digPoints[i][2]/(1+Math.pow(digPoints[i][0]-p[0],2)+Math.pow(digPoints[i][1]-p[1],2));
@@ -128,7 +131,7 @@ function sampleNoise(sample,point,scale){
   i = i%256;
   var p0 = sample[i];
   //TODO: wrap around??
-  var p1 = sample[i+1];
+  var p1 = sample[(i+257)%256];
 
   //console.log(i);
   return cosineInterpolate(p0,p1,(point[0]/scale)-Math.floor(point[0]/scale));
