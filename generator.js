@@ -11,6 +11,9 @@ var w = 400;        //~distance between zero and max
 var center;
 var digPoints = [];
 
+var theta = 0;   //angle from starting point
+var viewOffset = [0,0];
+
 function initCanvas(){
   var imageCanvas = document.getElementById("canvas");
   imageCanvas.width = window.innerWidth;
@@ -46,8 +49,14 @@ function render(step){
   render2(width,height,step);
 }
 
+function rotateView(x){
+  theta += x;
+  viewOffset = [rad*Math.sin(theta),-rad*Math.cos(theta)+center[1]-height*.55];
+  render(20);
+}
+
 function addDigPoint(x,y,r){
-  digPoints[digPoints.length]=[x,y,r];
+  digPoints[digPoints.length]=[x+viewOffset[0],y+viewOffset[1],r];
 }
 
 function render2(width,height,step){
@@ -63,7 +72,7 @@ function render2(width,height,step){
 
   for(var x = 0; x < xlimit; x+=1){
     for(var y = 0; y < ylimit; y+=1){
-      var point = [x*step,y*step];
+      var point = [x*step+viewOffset[0],y*step+viewOffset[1]];
 
       //very unconventional - used to allow digging
       points[x+y*xlimit]=density(point);
