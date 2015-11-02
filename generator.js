@@ -112,6 +112,11 @@ function sqrDist2d(p1, p2){
   return Math.pow((p1[0]-p2[0]),2) + Math.pow((p1[1]-p2[1]),2);
 }
 
+function map(x0,x1){
+  return -x0/(x1-x0);
+}
+
+
 function sampleNoise(sample,point,scale){
   var i = 16*Math.floor(point[1]/scale)+Math.floor(point[0]/scale);
   i = i%256;
