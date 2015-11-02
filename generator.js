@@ -6,7 +6,7 @@ var stepSize;
 var width;
 var height;
 var rad;
-var w = 1;
+var w = 100;        //~distance between zero and max
 var center;
 var digPoints = [];
 
@@ -22,14 +22,16 @@ function initCanvas(){
 }
 
 function initDensityVars(){
-  rad = width*.4;
-  center = [width/2,height*.85];
+  rad = width;
+  center = [width/2,rad+height*.45];
 }
 
 function density(p){          //negative is space, positive is ground
-  var density = 1-2/(1+Math.exp((rad*rad-sqrDist2d(p,center))*w));
+  var density = 1-2/(1+Math.exp((rad*rad-sqrDist2d(p,center))/(w*2)));
 
-  
+  density += sampleNoise(t1,p,128)*1;
+  density += sampleNoise(t2,p,63.4)*.5;
+  density += sampleNoise(t1,p,33)*.25;
 
   for(var i =0; i<digPoints.length; i++){
     density += -digPoints[i][2]/(1+Math.pow(digPoints[i][0]-p[0],2)+Math.pow(digPoints[i][1]-p[1],2));
@@ -122,7 +124,20 @@ function constrain(n,lower,upper){
 }
 
 function sampleNoise(sample,point,scale){
+  var i = 16*Math.floor(point[1]/scale)+Math.floor(point[0]/scale);
+  i = i%256;
+  var p0 = sample[i];
+  //TODO: wrap around??
+  var p1 = sample[i+1];
 
+  //console.log(i);
+  return cosineInterpolate(p0,p1,(point[0]/scale)-Math.floor(point[0]/scale));
+}
+
+function cosineInterpolate(y0,y1,x){
+  //from http://paulbourke.net/miscellaneous/interpolation/
+  var x1 = (1-Math.cos(x*Math.PI))/2;
+  return y0*(1-x1)+y1*x1;
 }
 
 var texture = [-0.136017491875, 0.4795268081249999, 0.471046808125, 0.22617038812499998, 0.6125878081249999, -0.418064801875, -0.7445891918750001, -0.509840191875, 0.33458580812499994, -0.683222291875, 0.21363780812499997, 0.699904808125, 0.342274808125, 0.30804680812499996, -1.150584191875, -0.04546369187500002];

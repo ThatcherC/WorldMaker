@@ -2,13 +2,14 @@
 <head>
 <title>World Maker</title>
 <script src="generator.js"></script>
+<script src="textures.js"></script>
 </head>
 <body style="margin:0">
   <canvas width=inherit height=auto id="canvas" onkeydown="KDE(event)" onclick="mouse(event)"></canvas>
   <script>
     initCanvas();
     render(20);
-    var r = 1000;
+    var r = 10;
 
     function mouse(e){
       addDigPoint(e.offsetX,e.offsetY,r);
