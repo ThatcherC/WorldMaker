@@ -112,20 +112,6 @@ function sqrDist2d(p1, p2){
   return Math.pow((p1[0]-p2[0]),2) + Math.pow((p1[1]-p2[1]),2);
 }
 
-function map(x0,x1){
-  return -x0/(x1-x0);
-}
-
-function constrain(n,lower,upper){
-  if(n<lower){
-    return lower;
-  }
-  if(n>upper){
-    return upper;
-  }
-  return n;
-}
-
 function sampleNoise(sample,point,scale){
   var i = 16*Math.floor(point[1]/scale)+Math.floor(point[0]/scale);
   i = i%256;
@@ -133,7 +119,6 @@ function sampleNoise(sample,point,scale){
   //TODO: wrap around??
   var p1 = sample[(i+257)%256];
 
-  //console.log(i);
   return cosineInterpolate(p0,p1,(point[0]/scale)-Math.floor(point[0]/scale));
 }
 
@@ -143,7 +128,6 @@ function cosineInterpolate(y0,y1,x){
   return y0*(1-x1)+y1*x1;
 }
 
-var texture = [-0.136017491875, 0.4795268081249999, 0.471046808125, 0.22617038812499998, 0.6125878081249999, -0.418064801875, -0.7445891918750001, -0.509840191875, 0.33458580812499994, -0.683222291875, 0.21363780812499997, 0.699904808125, 0.342274808125, 0.30804680812499996, -1.150584191875, -0.04546369187500002];
 var lineNumberLookup = [0,1,1,1,1,2,1,1,1,1,2,1,1,1,1,0];
 var edgeConnections =[[0,0,0,0],
                       [0,3,0,0],         //        0
