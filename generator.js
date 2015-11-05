@@ -14,6 +14,11 @@ var digPoints = [];
 var theta = 0;   //angle from starting point
 var viewOffset = [0,0];
 
+var xlimit;
+var ylimit;
+var step = 20;
+var densityArray = [];
+
 function initCanvas(){
   var imageCanvas = document.getElementById("canvas");
   imageCanvas.width = window.innerWidth;
@@ -45,8 +50,10 @@ function density(p){          //negative is space, positive is ground
   return density;
 }
 
-function render(step){
-  render2(width,height,step);
+function render(s){
+  render2(width,height,s);
+  console.log(xlimit);
+  console.log(ylimit);
 }
 
 function rotateView(x){
@@ -67,8 +74,10 @@ function render2(width,height,step){
   var points = [];
   stepSize = step;
 
-  var xlimit = Math.floor(step+width/step);
-  var ylimit = Math.floor(step+height/step);
+
+  //possibly not needed here anymore...
+  xlimit = Math.floor(step+width/step);
+  ylimit = Math.floor(step+height/step);
 
   for(var x = 0; x < xlimit; x+=1){
     for(var y = 0; y < ylimit; y+=1){
